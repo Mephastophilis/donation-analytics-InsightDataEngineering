@@ -1,9 +1,9 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
 """
 Created on Thu Feb 15 13:23:14 2018
 
 @author: bryanquigley
+
+Donation Analytics Coding Challenge for Insight Data Engineering Fellowship
 """
 from __future__ import division
 import numpy as np
@@ -19,7 +19,6 @@ entries = len(itcont)
 
 donorlist = []
 recipient_dict = defaultdict(list)
-output = [] 
 
 fileoutput = open("output/repeat_donors.txt", "w") 
 
@@ -34,20 +33,15 @@ for i in range(0,entries):
             if donor in donorlist:
                 if not recipient_dict:
                     recipient_dict.update({recipient_key: [[int(donation_data[14])]]} ) 
-                    output.append( [donation_data[0], donation_data[10][0:5], donation_data[13][4:8], int(donation_data[14]), int(donation_data[14]), 1] )
-                    fileoutput.write(str(output[-0][0])+'|'+str(output[0][1])+'|'+str(output[0][2])+'|'+str(output[0][3])+'|'+str(output[0][4])+'|'+str(output[0][5])+'\n')
-                    
+                    fileoutput.write(str(donation_data[0])+'|'+str(donation_data[10][0:5])+'|'+str(donation_data[13][4:8])+'|'+str(donation_data[14])+'|'+str(donation_data[14])+'|'+str(1)+'\n')
                 else:
                     if recipient_key in recipient_dict:
                         recipient_dict[recipient_key].append([int(donation_data[14])])
                         percentile_rank = int(np.ceil(percentile/100*len(recipient_dict[recipient_key])))
-                        output.append( [donation_data[0], donation_data[10][0:5], donation_data[13][4:8], sum(sum(recipient_dict[recipient_key], [])), recipient_dict[recipient_key][percentile_rank-1][0], len(recipient_dict[recipient_key])] )
-                        fileoutput.write(str(output[-1][0])+'|'+str(output[-1][1])+'|'+str(output[-1][2])+'|'+str(output[-1][3])+'|'+str(output[-1][4])+'|'+str(output[-1][5])+'\n')
-                        
+                        fileoutput.write(str(donation_data[0])+'|'+str(donation_data[10][0:5])+'|'+str(donation_data[13][4:8])+'|'+str(sum(sum(recipient_dict[recipient_key], [])))+'|'+str(recipient_dict[recipient_key][percentile_rank-1][0])+'|'+str(len(recipient_dict[recipient_key]))+'\n')
                     else:
                         recipient_dict.update({recipient_key: [[int(donation_data[14])]]} ) 
-                        output.append( [donation_data[0], donation_data[10][0:5], donation_data[13][4:8], int(donation_data[14]), int(donation_data[14]), 1])  
-                        fileoutput.write(str(output[-1][0])+'|'+str(output[-1][1])+'|'+str(output[-1][2])+'|'+str(output[-1][3])+'|'+str(output[-1][4])+'|'+str(output[-1][5])+'\n')
+                        fileoutput.write(str(donation_data[0])+'|'+str(donation_data[10][0:5])+'|'+str(donation_data[13][4:8])+'|'+str(int(donation_data[14]))+'|'+str(int(donation_data[14]))+'|'+str(1)+'\n')
             else:
                 donorlist.append(donor)       
     
